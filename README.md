@@ -1,2 +1,2 @@
-CODENinjaCornz
+NinjaCornz
 ==============

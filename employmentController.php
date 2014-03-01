@@ -33,30 +33,22 @@ class EmploymentController {
             $modelTemp = new EmploymentModel($row['IndustryID'], $row['Year'], $row['RegionID'], $row['Value']);
             //$this->modelArray[$i++] = $modelTemp;
             $this->modelArray[$row['Year']] = $row['Value'];
+            var_dump($this->modelArray);
         }
     }
 
     function mapQuery() {
-        $query = "SELECT * FROM employment  WHERE IndustryID=" . $industry . " 
-                  AND Year = " . $this->startYear;
-        $valueCurrentYear = mysql_query($query);
-        $query = "SELECT * FROM employment  WHERE IndustryID=" . $industry . " 
-                  AND Year = " . $this->endYear;
-        $valueEndYear = mysql_query($query);
-        $query = "SELECT SUM(Year) FROM employment  WHERE IndustryID=" . $industry . " 
-                  AND Year >= " . $this->startYear . " AND Year <= " . $this->endYear;
-        $totalSumYears = mysql_query($query);
-        // Selecting distinct values
-        $query = "SELECT DISTINCT(RegionID), (SELECT sum(value) from employment 
-                  WHERE RegionID=e.regionid AND year>= startYear AND year<=endYear)
-                  AS Value from employment as e";
+        $query = "SELECT RegionID, ((SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->endYear AND e2.IndustryID = $this->industry) - 
+                (SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->startYear AND e2.IndustryID = $this->industry)) / 
+                (SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->startYear  AND e2.IndustryID = $this->industry) AS Value
+                FROM employment AS e1
+                GROUP BY RegionID";
+        $result = mysql_query($query);
 
-        $i = 0;
-        while ($rowCurrentYear = mysql_fetch_assoc($valueCurrentYear) &&
-        $rowEndYear = mysql_fetch_assoc($valueEndYear) &&
-        $rowTotalYear = mysql_fetch_assoc($totalSumYears)) {
-            $this->modelArray[$rowCurrentYear['RegionID']] = ($rowEndYear['Value'] - $rowStartYear['Value']) / $rowTotalYear['Value'];
+        while ($row = mysql_fetch_assoc($result)) {
+            $this->modelArray[$row['RegionID']] = $row['Value'];
         }
+        var_dump($this->modelArray);
     }
 
     function dataToJson() {

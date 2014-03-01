@@ -1,11 +1,31 @@
 <?php
+if (!isset($_POST['RegionID']) || !isset($_POST['IndustryID'])) {
+  header("Location: index.php");   
+}
+$regionID = $_POST['RegionID'];
+$industryID = $_POST['IndustryID'];
+
 require_once('employmentController.php');
 
 // this should be done thru post or before hand
-$_SESSION['Region'] = 1;
-$_SESSION['Industry'] = 2;
+$_SESSION['Region'] = $regionID;
+$_SESSION['Industry'] = $industryID;
 
-$controller = new EmploymentController(2005, 2010, 'chart');
+$controller = new EmploymentController($_POST['startYear'], $_POST['endYear'], 'map');
+
+$sql = "SELECT * FROM region WHERE RegionID = $regionID";
+$result = mysql_query($sql);
+$row = mysql_fetch_assoc($result);
+$regionName = $row['RegionDesc'];
+
+$sql = "SELECT * FROM industry WHERE IndustryID = $industryID" ;
+$result = mysql_query($sql);
+$row = mysql_fetch_assoc($result);
+$industryName = $row['IndustryDesc'];
+
+while ($row = mysql_fetch_assoc($result)) {
+    $industryList .= "<option value = ".$row['IndustryID'].">".$row['IndustryDesc']." </option>";
+}
 ?>
 <div data-role="page">
 
@@ -30,7 +50,7 @@ $controller = new EmploymentController(2005, 2010, 'chart');
 			]);
 
 			var options = {
-				title: 'Employment by Year',
+				title: '<?php echo "Employment by Year for $industryName across $regionName (in Thousands)" ?>',
 				height: $(window).height() * 0.75,
 				width: $(window).width(),
 				legend: {position: 'none'}

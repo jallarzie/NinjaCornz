@@ -31,8 +31,9 @@ $controller = new EmploymentController(2005, 2010, 'chart');
 
 			var options = {
 				title: 'Employment by Year',
-				height: $(window).height(),
-				width: $(window).width()
+				height: $(window).height() * 0.75,
+				width: $(window).width(),
+				legend: {position: 'none'}
 			};
 
 			var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

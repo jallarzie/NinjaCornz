@@ -18,6 +18,18 @@ while ($row = mysql_fetch_assoc($result)) {
     $industryList .= "<option value = ".$row['IndustryID'].">".$row['IndustryDesc']." </option>";
 }
 
+$result = mysql_query('SELECT min(Year) FROM employment');
+if (!$result) {
+    die('Could not query:' . mysql_error());
+}
+$minYear = mysql_result($result, 0);
+
+$result = mysql_query('SELECT max(Year) FROM employment');
+if (!$result) {
+    die('Could not query:' . mysql_error());
+}
+$maxYear = mysql_result($result, 0);
+
 ?>
 
 <div data-role="page">
@@ -38,6 +50,16 @@ while ($row = mysql_fetch_assoc($result)) {
 				<?php echo $industryList ?>
 			</select>
 			<br>
+			<div data-role="rangeslider">
+				<label for="startYear">Years:</label>
+				<?php
+				echo "<input type=\"range\" name=\"startYear\" id=\"startYear\" min=\"$minYear\" max=\"$maxYear\" value=\"$minYear\">\n";
+				?>
+				<label for="endYear">Years:</label>
+				<?php
+				echo "<input type=\"range\" name=\"endYear\" id=\"endYear\" min=\"$minYear\" max=\"$maxYear\" value=\"$maxYear\">\n";
+				?>
+			</div>
 			<input type="submit" value="Submit" />
 		</form>
 

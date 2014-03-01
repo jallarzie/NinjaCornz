@@ -1,6 +1,7 @@
 <div data-role="page">
 
 	<div data-role="header" data-position="fixed">
+		<a title="Home" data-icon="home"  data-iconpos="notext" href="index.php">Home</a>
 		<h1>Map</h1>
 		<div data-role="navbar">
 			<ul>

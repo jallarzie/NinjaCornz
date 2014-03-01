@@ -23,7 +23,6 @@ while ($row = mysql_fetch_assoc($result)) {
 <div data-role="page">
 
 	<div data-role="header" data-position="fixed">
-		<a title=" Home " data-icon="home" href="index.php"> Home </a>
 		<h1></h1>
 	</div><!-- /header -->
 
@@ -31,11 +30,11 @@ while ($row = mysql_fetch_assoc($result)) {
 		
 		<form action="chart.php" method="POST">
 			Select Region:
-			<select> 
+			<select name="RegionID" data-native-menu="false"> 
 				<?php echo $regionList ?>
 			</select>
 			<br> Select Industry:
-			<select> 
+			<select name="IndustryID" data-native-menu="false"> 
 				<?php echo $industryList ?>
 			</select>
 			<br>

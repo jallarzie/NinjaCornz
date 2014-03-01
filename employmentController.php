@@ -20,7 +20,7 @@ class EmploymentController {
         if ($option == 'chart') {
             $this->chartQuery();
         } else {
-            // other method to implement
+            $this->mapQuery(); 
         }
     }
 
@@ -35,9 +35,31 @@ class EmploymentController {
         }
     }
 
-    public function getRecordResults() {
-        
+    function mapQuery() {
+        $query = "SELECT * FROM employment  WHERE IndustryID=".$industry." 
+                  AND Year = ".$this->startYear;
+        $valueCurrentYear = mysql_query($query);
+        $query = "SELECT * FROM employment  WHERE IndustryID=".$industry." 
+                  AND Year = ".$this->endYear;
+        $valueEndYear = mysql_query($query);
+        $query = "SELECT SUM(Year) FROM employment  WHERE IndustryID=".$industry." 
+                  AND Year >= ".$this->startYear." AND Year <= ".$this->endYear;
+        $totalSumYears = mysql_query($query); 
+        // Selecting distinct values
+        $query = "SELECT DISTINCT(RegionID), (SELECT sum(value) from employment 
+                  WHERE RegionID=e.regionid AND year>= startYear AND year<=endYear)
+                  AS Value from employment as e"; 
+
+        $mapValues=array(); 
+        $i=0; 
+        while ($rowCurrentYear = mysql_fetch_assoc($valueCurrentYear) &&
+                $rowEndYear = mysql_fetch_assoc($valueEndYear) && 
+                $rowTotalYear = mysql_fetch_assoc($totalSumYears)){
+            $mapValues[$rowCurrentYear['RegionID']]=($rowEndYear['Value']-$rowStartYear['Value'])/$rowTotalYear['Value']; 
+
+        }
     }
+
 
 }
 

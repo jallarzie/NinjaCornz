@@ -6,16 +6,27 @@ require_once 'employmentModel.php';
 class EmploymentController {
 
     private $modelArray;
+    private $region;
+    private $industry;
+    private $startYear;
+    private $endYear;
 
-    function __construct() {
+    function __construct($startYear, $endYear, $option) {
+        $this->region = $_SESSION['Region'];
+        $this->industry = $_SESSION['Industry'];
+        $this->startYear = $startYear;
+        $this->endYear = $endYear;
         $this->modelArray = array();
-        $this->runQuery(1, 1);
+        if ($option == 'chart') {
+            $this->chartQuery();
+        } else {
+            // other method to implement
+        }
     }
 
-    function runQuery($region, $industry) {
-        $query = "SELECT * 
-				  FROM employment
-				  WHERE RegionID=$region AND IndustryID=$industry ";
+    function chartQuery() {
+        $query = "SELECT * FROM employment  WHERE RegionID=".$this->region." AND IndustryID=".$industry." 
+                  AND Year >= ".$this->startYear ." AND Year <= ". $this->endYear;
         $result = mysql_query($query);
         $i = 0;
         while ($row = mysql_fetch_assoc($result)) {

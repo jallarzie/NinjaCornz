@@ -83,7 +83,7 @@ class EmploymentController {
         foreach ($this->modelArray as $key => $value) {
             $toReturn .= "['$key', $value],";
         }
-        substr($toReturn, 0, -1);
+        $toReturn = substr($toReturn, 0, -1);
         return $toReturn;
     }
 

@@ -20,18 +20,34 @@ while ($row = mysql_fetch_assoc($result)) {
 
 ?>
 
-<form action="index.php" method="POST">
-    Select Country: 
-    <select>
-        <option> Canada </option>
-    </select>
-    <br> Select Region:
-    <select> 
-        <?php echo $regionList ?>
-    </select>
-    <br> Select Industry:
-    <select> 
-        <?php echo $industryList ?>
-    </select>
+<div data-role="page">
 
-</form>
+	<div data-role="header" data-position="fixed">
+		<a title=" Home " data-icon="home" href="index.php"> Home </a>
+		<h1></h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		
+		<form action="chart.php" method="POST">
+			Select Region:
+			<select> 
+				<?php echo $regionList ?>
+			</select>
+			<br> Select Industry:
+			<select> 
+				<?php echo $industryList ?>
+			</select>
+			<br>
+			<input type="submit" value="Submit" />
+		</form>
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+		<h4>
+			
+		</h4>
+	</div><!-- /footer -->
+
+</div><!-- /page -->

@@ -13,21 +13,7 @@
 
 <body>
 
-<div data-role="page">
-
-	<div data-role="header">
-		<h1>Single page</h1>
-	</div><!-- /header -->
-
-	<div role="main" class="ui-content">
-		
-	</div><!-- /content -->
-
-	<div data-role="footer">
-		<h4>Footer content</h4>
-	</div><!-- /footer -->
-
-</div><!-- /page -->
+	<?php include('input.php'); ?>
 
 </body>
 </html>

@@ -22,25 +22,24 @@ $controller = new EmploymentController(2005, 2010, 'chart');
 
 	<div role="main" class="ui-content">
 		
-		<!---<script type="text/javascript">
-            google.load("visualization", "1", {packages: ["corechart"]});
-            google.setOnLoadCallback(drawChart);
-            function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                <?php
-                echo $controller->dataToTable();
-                ?>
-                ]);
+		<script type="text/javascript">
+			var data = google.visualization.arrayToDataTable([
+			<?php
+			echo $controller->dataToTable();
+			?>
+			]);
 
-                var options = {
-                    title: 'Company Performance'
-                };
+			var options = {
+				title: 'Employment by Year',
+				height: $(window).height(),
+				width: $(window).width()
+			};
 
-                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-                chart.draw(data, options);
-            }
+			var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+			chart.draw(data, options);
+
         </script>
-        <div id="chart_div" style="width: 900px; height: 500px;"></div>--->
+        <div id="chart_div"></div>
 
 	</div><!-- /content -->
 

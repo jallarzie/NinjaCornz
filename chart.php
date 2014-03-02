@@ -15,7 +15,7 @@ if (isset($_POST['RegionID']) && isset($_POST['IndustryID'])) {
     $startYear = $_SESSION['StartYear'];
     $endYear = $_SESSION['EndYear'];
 } else{
-    header("Location: input.php");
+    header("Location: index.php");
 }
 
 require_once('employmentController.php');
@@ -30,15 +30,6 @@ $sql = "SELECT * FROM region WHERE RegionID = $regionID";
 $result = mysql_query($sql);
 $row = mysql_fetch_assoc($result);
 $regionName = $row['RegionDesc'];
-echo "here";
-//$sql = "SELECT * FROM industry WHERE IndustryID = $industryID" ;
-//$result = mysql_query($sql);
-//$row = mysql_fetch_assoc($result);
-//$industryName = $row['IndustryDesc'];
-//while ($row = mysql_fetch_assoc($result)) {
-//    $industryList .= "<option value = ".$row['IndustryID'].">".$row['IndustryDesc']." </option>";
-//}
-//`echo $controller->dataToTable();
 ?>
 <div data-role="page">
 
@@ -62,7 +53,7 @@ echo "here";
             ]);
 
             var options = {
-                title: '<?php echo "Employment by Year across $regionName (in Thousands)" ?>',
+                title: '<?php echo "Employment by Year across $regionName \\n(in Thousands)" ?>',
                 height: $(window).height() * 0.75,
                 width: $(window).width() * 0.91,
                 legend: {position: 'right'}

@@ -34,8 +34,8 @@ while ($row = mysql_fetch_assoc($result)) {
 		<h1>Chart</h1>
 		<div data-role="navbar">
 			<ul>
-				<li><a href="chart.php" class="ui-btn-active ui-state-persist">Chart</a></li>
-				<li><a href="map.php">Map</a></li>
+				<li><a href="index.php?page=chart" class="ui-btn-active ui-state-persist">Chart</a></li>
+				<li><a href="index.php?page=map">Map</a></li>
 			</ul>
 		</div><!-- /navbar -->
 	</div><!-- /header -->

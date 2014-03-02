@@ -74,9 +74,9 @@ class EmploymentController {
     }
 
     function mapQuery() {
-        $query = "SELECT RegionID, ((SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->endYear AND e2.IndustryID = {$this->industry[0]}) - 
-                (SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->startYear AND e2.IndustryID = {$this->industry[0]})) / 
-                (SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->startYear  AND e2.IndustryID = {$this->industry[0]}) AS Value
+        $query = "SELECT RegionID, ((SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->endYear AND e2.IndustryID = {$_SESSION['mapIndustryID']}) - 
+                (SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->startYear AND e2.IndustryID = {$_SESSION['mapIndustryID']})) / 
+                (SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->startYear  AND e2.IndustryID = {$_SESSION['mapIndustryID']}) AS Value
                 FROM employment AS e1
                 GROUP BY RegionID";
         $result = mysql_query($query);
@@ -110,7 +110,7 @@ class EmploymentController {
 //            } else if ($saveKey == $key) {
 //                $toReturn .= ", $value[1]";
 //            }
-            $toReturn .= "['$key'";
+            $toReturn .= "[$key";
             for ($i = 0; $i < count($this->industry); $i++) {
                 $toReturn .= "," . $value[$this->industry[$i]] . "";
             }

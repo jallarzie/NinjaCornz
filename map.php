@@ -1,15 +1,6 @@
 <?php
 session_start();
-if (isset($_POST['RegionID']) && isset($_POST['IndustryID'])) {
-    $regionID = $_POST['RegionID'];
-    $industryID = $_POST['IndustryID'];
-    $startYear = $_POST['startYear'];
-    $endYear = $_POST['endYear'];
-    $_SESSION['Region'] = $regionID;
-    $_SESSION['Industry'] = $industryID;
-    $_SESSION['StartYear'] = $startYear;
-    $_SESSION['EndYear'] = $endYear;
-} else if (isset($_SESSION['Region']) && isset($_SESSION['Industry'])) {
+if (isset($_SESSION['Region']) && isset($_SESSION['Industry'])) {
     $regionID = $_SESSION['Region'];
     $industryID = $_SESSION['Industry'];
     $startYear = $_SESSION['StartYear'];
@@ -18,33 +9,40 @@ if (isset($_POST['RegionID']) && isset($_POST['IndustryID'])) {
     header("Location: index.php");
 }
 
-var_dump($industryID);
+if (isset($_POST['mapIndustryID'])) {
+	$_SESSION['mapIndustryID'] = $_POST['mapIndustryID'];
+}
+else if (!isset($_SESSION['mapIndustryID'])) {
+	$_SESSION['mapIndustryID'] = $industryID[0];
+}
 
 require_once('employmentController.php');
 
-//$industryID = array(3, 4, 5);
-
-var_dump($industryID);
-
-// this should be done thru post or before hand
-
-
 $controller = new EmploymentController($startYear, $endYear, 'map');
 
+$sql = 'SELECT * FROM industry WHERE IndustryID IN (';
+
+foreach ($industryID as $value){
+	$sql .= "$value,";
+}
+
+$sql = substr($sql, 0, -1);
+$sql .= ')';
+echo $sql;
+$result = mysql_query($sql);
+
+while ($row = mysql_fetch_assoc($result)) {
+    $industryList .= "<option value = ".$row['IndustryID'] ;
+	if($row['IndustryID'] == $_SESSION['mapIndustryID']) {
+		$industryList .= ' selected="selected" ';
+	}
+	$industryList .= ">".$row['IndustryDesc']." </option>";
+}
 
 $sql = "SELECT * FROM region WHERE RegionID = $regionID";
 $result = mysql_query($sql);
 $row = mysql_fetch_assoc($result);
 $regionName = $row['RegionDesc'];
-
-//$sql = "SELECT * FROM industry WHERE IndustryID = $industryID" ;
-//$result = mysql_query($sql);
-//$row = mysql_fetch_assoc($result);
-//$industryName = $row['IndustryDesc'];
-//while ($row = mysql_fetch_assoc($result)) {
-//    $industryList .= "<option value = ".$row['IndustryID'].">".$row['IndustryDesc']." </option>";
-//}
-//`echo $controller->dataToTable();
 ?>
 
 <div data-role="page">
@@ -63,24 +61,24 @@ $regionName = $row['RegionDesc'];
     <div role="main" class="ui-content">
         <script type='text/javascript' src='https://www.google.com/jsapi'></script>
         <script type='text/javascript'>
-            drawRegionsMap();
-
-            function drawRegionsMap() {
-                var data = google.visualization.arrayToDataTable([
-<?php
-echo $controller->getDataToMap();
-?>
+                 data = google.visualization.arrayToDataTable([
+				<?php
+				echo $controller->getDataToMap();
+				?>
                 ]);
 
-                var geochart = new google.visualization.GeoChart(
+                geochart = new google.visualization.GeoChart(
                         document.getElementById('map_div'));
-                geochart.draw(data, {width: $(window).width(), height: $(window).height() * 0.75,
+                geochart.draw(data, {width: $(window).width(), height: $(window).height() * 0.65,
                     region: 'CA', resolution: 'provinces',
                     colorAxis: {minValue: -100, maxValue: 100, values: [-100, 100], colors: ['#FF0000', '#0000FF']},
                     datalessRegionColor: '#AAAAAA'});
-  
-                }
         </script>
+		<form method="post" action="index.php?page=map">
+			<select id="mapIndustryID" name="mapIndustryID">
+				<?php echo $industryList ?>
+			</select>
+		</form>
         <div id="map_div"></div>
 
     </div><!-- /content -->
@@ -88,5 +86,4 @@ echo $controller->getDataToMap();
     <div data-role="footer" data-position="fixed">
         <h4> </h4>
     </div><!-- /footer -->
-
 </div><!-- /page -->

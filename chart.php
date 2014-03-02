@@ -15,7 +15,7 @@ if (isset($_POST['RegionID']) && isset($_POST['IndustryID'])) {
     $startYear = $_SESSION['StartYear'];
     $endYear = $_SESSION['EndYear'];
 } else{
-    header("Location: input.php");
+    header("Location: index.php");
 }
 
 require_once('employmentController.php');

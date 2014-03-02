@@ -1,3 +1,52 @@
+<?php
+session_start();
+if (isset($_POST['RegionID']) && isset($_POST['IndustryID'])) {
+    $regionID = $_POST['RegionID'];
+    $industryID = $_POST['IndustryID'];
+    $startYear = $_POST['startYear'];
+    $endYear = $_POST['endYear'];
+    $_SESSION['Region'] = $regionID;
+    $_SESSION['Industry'] = $industryID;
+    $_SESSION['StartYear'] = $startYear;
+    $_SESSION['EndYear'] = $endYear;
+}else if(isset($_SESSION['Region']) && isset($_SESSION['Industry'])) {
+    $regionID = $_SESSION['Region'];
+    $industryID = $_SESSION['Industry'];
+    $startYear = $_SESSION['StartYear'];
+    $endYear = $_SESSION['EndYear'];
+} else{
+    header("Location: input.php");
+}
+
+require_once('employmentController.php');
+
+//$industryID = array(3, 4, 5);
+
+var_dump($industryID);
+
+// this should be done thru post or before hand
+
+
+$controller = new EmploymentController($startYear, $endYear, 'chart');
+
+
+$sql = "SELECT * FROM region WHERE RegionID = $regionID";
+$result = mysql_query($sql);
+$row = mysql_fetch_assoc($result);
+$regionName = $row['RegionDesc'];
+echo "here";
+//$sql = "SELECT * FROM industry WHERE IndustryID = $industryID" ;
+//$result = mysql_query($sql);
+//$row = mysql_fetch_assoc($result);
+//$industryName = $row['IndustryDesc'];
+
+//while ($row = mysql_fetch_assoc($result)) {
+//    $industryList .= "<option value = ".$row['IndustryID'].">".$row['IndustryDesc']." </option>";
+//}
+
+//`echo $controller->dataToTable();
+?>
+
 <div data-role="page">
 
     <div data-role="header" data-position="fixed">

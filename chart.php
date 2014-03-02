@@ -11,7 +11,7 @@ require_once('employmentController.php');
 $_SESSION['Region'] = $regionID;
 $_SESSION['Industry'] = $industryID;
 
-$controller = new EmploymentController($_POST['startYear'], $_POST['endYear'], 'map');
+$controller = new EmploymentController($_POST['startYear'], $_POST['endYear'], 'chart');
 
 $sql = "SELECT * FROM region WHERE RegionID = $regionID";
 $result = mysql_query($sql);

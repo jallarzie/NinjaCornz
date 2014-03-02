@@ -48,7 +48,7 @@ class EmploymentController {
         while ($row = mysql_fetch_assoc($result)) {
             $this->modelArray[$row['RegionID']] = $row['Value'];
         }
-        var_dump($this->modelArray);
+//        var_dump($this->modelArray);
     }
 
     function dataToJson() {

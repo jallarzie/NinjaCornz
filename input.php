@@ -40,13 +40,13 @@ $maxYear = mysql_result($result, 0);
 
 	<div role="main" class="ui-content">
 		
-		<form action="chart.php" method="POST">
+		<form action="index.php?page=chart" method="POST">
 			Select Region:
 			<select name="RegionID" data-native-menu="false"> 
 				<?php echo $regionList ?>
 			</select>
 			<br> Select Industry:
-			<select name="IndustryID" data-native-menu="false"> 
+			<select name="IndustryID[]" data-native-menu="false" multiple="multiple"> 
 				<?php echo $industryList ?>
 			</select>
 			<br>

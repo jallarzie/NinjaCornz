@@ -57,7 +57,7 @@ echo "here";
         </div><!-- /navbar -->
     </div><!-- /header -->
 
-    <div role="main" class="ui-content"> 
+    <div role="main" class="ui-content">
         <script type="text/javascript">
             var data = google.visualization.arrayToDataTable([
 <?php
@@ -68,7 +68,7 @@ echo $controller->dataToTable();
             var options = {
                 title: '<?php echo "Employment by Year across $regionName (in Thousands)" ?>',
                 height: $(window).height() * 0.75,
-                width: $(window).width(),
+                width: $(window).width() * 0.91,
                 legend: {position: 'right'}
             };
 

@@ -46,7 +46,7 @@ $maxYear = mysql_result($result, 0);
 				<?php echo $regionList ?>
 			</select>
 			<br> Select Industry:
-			<select name="IndustryID" data-native-menu="false"> 
+			<select name="IndustryID[]" data-native-menu="false" multiple="multiple"> 
 				<?php echo $industryList ?>
 			</select>
 			<br>

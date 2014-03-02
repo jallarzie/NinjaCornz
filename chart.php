@@ -20,10 +20,6 @@ if (isset($_POST['RegionID']) && isset($_POST['IndustryID'])) {
 
 require_once('employmentController.php');
 
-//$industryID = array(3, 4, 5);
-
-var_dump($industryID);
-
 // this should be done thru post or before hand
 
 
@@ -60,9 +56,9 @@ echo "here";
     <div role="main" class="ui-content">
         <script type="text/javascript">
             var data = google.visualization.arrayToDataTable([
-<?php
-echo $controller->dataToTable();
-?>
+                <?php
+                echo $controller->dataToTable();
+                ?>
             ]);
 
             var options = {

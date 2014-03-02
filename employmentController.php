@@ -74,9 +74,9 @@ class EmploymentController {
     }
 
     function mapQuery() {
-        $query = "SELECT RegionID, ((SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->endYear AND e2.IndustryID = $this->industry) - 
-                (SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->startYear AND e2.IndustryID = $this->industry)) / 
-                (SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->startYear  AND e2.IndustryID = $this->industry) AS Value
+        $query = "SELECT RegionID, ((SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->endYear AND e2.IndustryID = {$this->industry[0]}) - 
+                (SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->startYear AND e2.IndustryID = {$this->industry[0]})) / 
+                (SELECT Value FROM employment AS e2 WHERE e1.RegionID = e2.RegionID AND e2.Year = $this->startYear  AND e2.IndustryID = {$this->industry[0]}) AS Value
                 FROM employment AS e1
                 GROUP BY RegionID";
         $result = mysql_query($query);
@@ -87,33 +87,14 @@ class EmploymentController {
 //        var_dump($this->modelArray);
     }
 
-    function dataToJson() {
-        $toReturn = "";
-
-        $toReturn .= '{ ';
-        $toReturn .= '"cols": [';
-        $toReturn .= '{"id":"","label":"Year","pattern":"","type":"string"}, ';
-        $toReturn .= '{"id":"","label":"Value","pattern":"","type":"float"} ';
-        $toReturn .= '],';
-
-        $toReturn .= '"rows": [';
-        foreach ($this->modelArray as $key => $value) {
-            $toReturn .= '{"c":[{"v":"' . $key . '","f":null},{"v":"' . $value . '","f":null}]}';
-        }
-        $toReturn .= ']';
-        $toReturn .= '}';
-        //  var_dump($toReturn);
-        return $toReturn;
-    }
-
     function dataToTable() {
 
         $title = "['Year'";
         $toReturn = "";
         $saveKey = "";
-         for ($i = 0; $i < count($this->industry); $i++) {
-                $title .= ", '".$this->industryNames[$this->industry[$i]]."'";
-            }
+        for ($i = 0; $i < count($this->industry); $i++) {
+            $title .= ", '" . $this->industryNames[$this->industry[$i]] . "'";
+        }
 
         foreach ($this->modelArray as $key => $value) {
 //            if ($saveKey != "" && $saveKey != $key) {
@@ -129,18 +110,33 @@ class EmploymentController {
 //            } else if ($saveKey == $key) {
 //                $toReturn .= ", $value[1]";
 //            }
-             $toReturn .= "['$key'";
+            $toReturn .= "['$key'";
             for ($i = 0; $i < count($this->industry); $i++) {
-                $toReturn .= ",". $value[$this->industry[$i]]."";
+                $toReturn .= "," . $value[$this->industry[$i]] . "";
             }
             $toReturn .= "],";
         }
         $title .= "],";
         $toReturn = substr($toReturn, 0, -1);
         $final = $title . $toReturn;
-       // echo $final;
+        // echo $final;
         //echo $title;
+
         return $final;
+    }
+
+    function getDataToMap() {
+        $toReturn = "['Province', 'Employment Growth'],";
+        foreach ($this->modelArray as $key => $value) {
+            if ($this->regionNames[$key] == 'Canada') {
+                continue;
+            }
+            $toReturn .= "['" . $this->regionNames[$key] . "', " . ($value * 100) . "],";
+
+        }
+
+        $toReturn = substr($toReturn, 0, -1);
+        return $toReturn;
     }
 
 }
